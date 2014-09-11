@@ -148,9 +148,9 @@ class HandleHttpsAttributeTypeController extends AttributeTypeController
         $value = Loader::db()->GetOne("select value from atHandleHttps where avID = ?", array($this->getAttributeValueID()));
         if (is_string($value)) {
             $hhh = Loader::helper('https_handling', 'handle_https');
-               /* @var $hhh HttpsHandlingHelper */
-               if (array_key_exists($value, $hhh->getHandlings())) {
-                $result = $value;
+            /* @var $hhh HttpsHandlingHelper */
+            if (array_key_exists($value, $hhh->getHandlings())) {
+               $result = $value;
             }
         }
 
