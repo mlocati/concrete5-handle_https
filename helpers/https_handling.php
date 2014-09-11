@@ -143,7 +143,6 @@ class HttpsHandlingHelper
         if ((!is_object($page)) || (!is_a($page, 'Collection')) || $page->isError()) {
             return;
         }
-        $page = Collection::getByID($page->getCollectionID());
         $db = Loader::db();
         $ak = null;
         $config = null;
@@ -209,6 +208,9 @@ class HttpsHandlingHelper
         if (!$config['akRedirectEditors']) {
             $user = User::isLoggedIn() ? new User() : null;
             if (is_object($user) && $user->getUserID()) {
+                if(is_a($page, 'Collection')) {
+                    $page = Page::getByID($page->getCollectionID());
+                }
                 $pp = new Permissions($page);
                 if (!$pp->isError()) {
                     if ($pp->canEditPageContents() || $pp->canEditPageProperties()) {
@@ -242,7 +244,33 @@ class HttpsHandlingHelper
             header('Location: ' . $finalURL);
         }
         else {
-            // Let's forward POST data
+            ?><!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=<?php echo h(APP_CHARSET); ?>">
+        <meta charset="<?php echo h(APP_CHARSET); ?>">
+        <script type="text/javascript">
+        window.onload = function() {
+            var F = document.all ? document.all('form') : document.getElementById('form');
+            F.submit();
+        };
+        </script>
+    </head>
+    <body>
+        <form id="form" method="POST" action="<?php echo h($finalURL); ?>"><?php
+            foreach($_POST as $key => $value) {
+                if(is_array($value)) {
+                    foreach($value as $value1) {
+                        ?><input type="hidden" name="<?php echo h($key); ?>[]" value="<?php echo h($value1); ?>"><?php
+                    }
+                }
+                else {
+                    ?><input type="hidden" name="<?php echo h($key); ?>" value="<?php echo h($value); ?>"><?php
+                }
+            }
+        ?></form>
+    </body>
+</html><?php
         }
         die();
     }
