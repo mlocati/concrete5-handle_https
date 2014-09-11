@@ -58,7 +58,7 @@ class HandleHttpsAttributeTypeController extends AttributeTypeController
         $akRedirectEditors = empty($data['akRedirectEditors']) ? 0 : 1;
         $akDefaultRequirement = $data['akDefaultRequirement'];
         if (!(is_string($akDefaultRequirement) && array_key_exists($akDefaultRequirement, $hhh->getHandlings()))) {
-            $akDefaultRequirement = $hhh::SSLHANDLING_DOESNOT_MATTER;
+            $akDefaultRequirement = HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER;
         }
         $akCustomDomains = empty($data['akCustomDomains']) ? 0 : 1;
         $akHTTPDomain = is_string($data['akHTTPDomain']) ? $data['akHTTPDomain'] : '';
@@ -275,7 +275,7 @@ class HandleHttpsAttributeTypeController extends AttributeTypeController
         /* @var $hhh HttpsHandlingHelper */
         $this->akEnabled = 0;
         $this->akRedirectEditors = 0;
-        $this->akDefaultRequirement = $hhh::SSLHANDLING_DOESNOT_MATTER;
+        $this->akDefaultRequirement = HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER;
         $this->akCustomDomains = 0;
         $this->akHTTPDomain = '';
         $this->akHTTPSDomain = '';
@@ -286,7 +286,7 @@ class HandleHttpsAttributeTypeController extends AttributeTypeController
                 $this->akEnabled = empty($row['akEnabled']) ? 0 : 1;
                 $this->akRedirectEditors = empty($row['akRedirectEditors']) ? 0 : 1;
                 if (array_key_exists($row['akDefaultRequirement'], $hhh->getHandlings())) {
-                    $this->akDefaultRequirement = $hhh::SSLHANDLING_DOESNOT_MATTER;
+                    $this->akDefaultRequirement = HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER;
                 }
                 $this->akCustomDomains = empty($row['akCustomDomains']) ? 0 : 1;
                 $this->akHTTPDomain = is_string($row['akHTTPDomain']) ? $row['akHTTPDomain'] : '';

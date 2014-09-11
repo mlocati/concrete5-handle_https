@@ -68,7 +68,7 @@ class HandleHttpsPackage extends Package
                     'akIsEditable' => 1,
                     'akIsInternal' => 0,
                     'akEnabled' => 0,
-                    'akDefaultRequirement' => $hhh::SSLHANDLING_DOESNOT_MATTER,
+                    'akDefaultRequirement' => HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER,
                     'akCustomDomains' => 0,
                     'akHTTPDomain' => $httpDomain,
                     'akHTTPSDomain' => $httpsDomain
