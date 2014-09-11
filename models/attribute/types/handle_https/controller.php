@@ -285,7 +285,8 @@ class HandleHttpsAttributeTypeController extends AttributeTypeController
             if ($row) {
                 $this->akEnabled = empty($row['akEnabled']) ? 0 : 1;
                 $this->akRedirectEditors = empty($row['akRedirectEditors']) ? 0 : 1;
-                if (array_key_exists($row['akDefaultRequirement'], $hhh->getHandlings())) {
+                $this->akDefaultRequirement = $row['akDefaultRequirement'];
+                if (!array_key_exists($this->akDefaultRequirement, $hhh->getHandlings())) {
                     $this->akDefaultRequirement = HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER;
                 }
                 $this->akCustomDomains = empty($row['akCustomDomains']) ? 0 : 1;
