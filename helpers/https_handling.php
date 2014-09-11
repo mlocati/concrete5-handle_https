@@ -259,14 +259,7 @@ class HttpsHandlingHelper
     <body>
         <form id="form" method="POST" action="<?php echo h($finalURL); ?>"><?php
             foreach($_POST as $key => $value) {
-                if(is_array($value)) {
-                    foreach($value as $value1) {
-                        ?><input type="hidden" name="<?php echo h($key); ?>[]" value="<?php echo h($value1); ?>"><?php
-                    }
-                }
-                else {
-                    ?><input type="hidden" name="<?php echo h($key); ?>" value="<?php echo h($value); ?>"><?php
-                }
+                self::writeFormPost($key, $value);
             }
         ?></form>
     </body>
@@ -274,4 +267,15 @@ class HttpsHandlingHelper
         }
         die();
     }
+    private static function writeFormPost($name, $value)
+    {
+        if(is_array($value)) {
+            foreach($value as $subKey => $subValue) {
+                self::writeFormPost($name . '[' . $subKey . ']', $subValue);
+            }
+        }
+        else {
+            ?><input type="hidden" name="<?php echo h($name); ?>" value="<?php echo h($value); ?>"><?php
+        }
+   }
 }
