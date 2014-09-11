@@ -4,7 +4,7 @@ class HandleHttpsPackage extends Package
 {
     protected $pkgHandle = 'handle_https';
     protected $appVersionRequired = '5.6.3';
-    protected $pkgVersion = '0.9.2';
+    protected $pkgVersion = '0.9.3';
 
     public function getPackageName()
     {
