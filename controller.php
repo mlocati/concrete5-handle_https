@@ -45,36 +45,38 @@ class HandleHttpsPackage extends Package
                 $akc->associateAttributeKeyType($at);
             }
         }
-        $ak = CollectionAttributeKey::getByHandle('handle_https');
-        $hhh = Loader::helper('https_handling', 'handle_https');
-        /* @var $hhh HttpsHandlingHelper */
-        if (!is_object($ak)) {
-            $httpDomain = defined('BASE_URL') ? BASE_URL : Config::get('BASE_URL');
-            if (!$httpDomain) {
-                $httpDomain = 'http://' . $hhh->getRequestDomain();
+        if (empty($fromVersion)) {
+            $ak = CollectionAttributeKey::getByHandle('handle_https');
+            if (!is_object($ak)) {
+                $hhh = Loader::helper('https_handling', 'handle_https');
+                /* @var $hhh HttpsHandlingHelper */
+                $httpDomain = defined('BASE_URL') ? BASE_URL : Config::get('BASE_URL');
+                if (!$httpDomain) {
+                    $httpDomain = 'http://' . $hhh->getRequestDomain();
+                }
+                $httpsDomain = defined('BASE_URL_SSL') ? BASE_URL_SSL : Config::get('BASE_URL_SSL');
+                if (!$httpsDomain) {
+                    $httpsDomain = 'https://' . $hhh->getRequestDomain();
+                }
+                $ak = CollectionAttributeKey::add(
+                    $at,
+                    array(
+                        'akHandle' => 'handle_https',
+                        'akName' => tc('AttributeKeyName', 'Page HTTP/HTTPS'),
+                        'akIsSearchable' => 1,
+                        'akIsSearchableIndexed' => 1,
+                        'akIsAutoCreated' => 1,
+                        'akIsEditable' => 1,
+                        'akIsInternal' => 0,
+                        'akEnabled' => 0,
+                        'akDefaultRequirement' => HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER,
+                        'akCustomDomains' => 0,
+                        'akHTTPDomain' => $httpDomain,
+                        'akHTTPSDomain' => $httpsDomain
+                    ),
+                    $pkg
+                );
             }
-            $httpsDomain = defined('BASE_URL_SSL') ? BASE_URL_SSL : Config::get('BASE_URL_SSL');
-            if (!$httpsDomain) {
-                $httpsDomain = 'https://' . $hhh->getRequestDomain();
-            }
-            $ak = CollectionAttributeKey::add(
-                $at,
-                array(
-                    'akHandle' => 'handle_https',
-                    'akName' => tc('AttributeKeyName', 'Page HTTP/HTTPS'),
-                    'akIsSearchable' => 1,
-                    'akIsSearchableIndexed' => 1,
-                    'akIsAutoCreated' => 1,
-                    'akIsEditable' => 1,
-                    'akIsInternal' => 0,
-                    'akEnabled' => 0,
-                    'akDefaultRequirement' => HttpsHandlingHelper::SSLHANDLING_DOESNOT_MATTER,
-                    'akCustomDomains' => 0,
-                    'akHTTPDomain' => $httpDomain,
-                    'akHTTPSDomain' => $httpsDomain
-                ),
-                $pkg
-            );
         }
     }
 
